@@ -8,6 +8,7 @@ Vue.use(Router)
 
 const router = new Router({
 	routes:[
+		{path:'/',redirect:'/goods'},
 		{path:'/goods',name:'goods',component:goods},
 		{path:'/ratings',name:'ratings',component:ratings},
 		{path:'/seller',name:'seller',component:seller}
@@ -15,7 +16,6 @@ const router = new Router({
 })
 export default router
 
-router.push('goods')
-
+router.push('/goods')
 
 
