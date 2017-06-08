@@ -15,24 +15,84 @@
   				<span class="text">{{seller.supports[0].description}}</span>
   			</div>
   		</div>
-  		<div v-if="seller.supports" class="support-count">
+  		<div v-if="seller.supports" class="support-count" @click="showDetail">
   			<span class="count">{{seller.supports.length}}个</span>
   			<i class="icon-keyboard_arrow_right"></i>
   		</div>
   	</div>
-  	<div class="bulletin-wrapper"></div>
+  	<div class="bulletin-wrapper" @click="showDetail">
+  		<span class="bulletin-title"></span>
+  		<span class="bulletin-text">{{seller.bulletin}}</span>
+  		<i class="icon-keyboard_arrow_right"></i>
+  	</div>
+  	<div class="background">
+  		<img :src="seller.avatar" width="100%" height="100%" >
+  	</div>
+  	<transition name="fade">
+  		<div v-show="detailShow" class="detail">
+	  		<div class="detail-wrapper clearfix">
+	  			<div class="detail-main">
+	  				<h1 class="name">{{seller.name}}</h1>
+	  				<div class="star-wrapper">
+	  					<star :size="48" :score="seller.score"></star>
+	  				</div>
+	  				<div class="title">
+	  					<div class="line"></div>
+	  					<div class="text">优惠信息</div>
+	  					<div class="line"></div>
+	  				</div>
+	  				<ul v-if="seller.supports" class="supports">
+	  					<li class="support-item" v-for="(item,index) in seller.supports">
+	  						<span class="icon" :class="classMap[seller.supports[index].type]"></span>
+	  						<span class="text">{{seller.supports[index].description}}</span>
+	  					</li>
+	  				</ul>
+	  				<div class="title">
+	  					<div class="line"></div>
+	  					<div class="text">商家公告</div>
+	  					<div class="line"></div>
+	  				</div>
+	  				<div class="bulletin">
+	  					<p class="content">{{seller.bulletin}}</p>
+	  				</div>
+	  			</div>
+	  		</div>
+	  		<div class="detail-close" @click="hideDetail">
+	  			<i class="icon-close"></i>
+	  		</div>
+	  	</div>
+  	</transition>	
+  	
   </div>
 </template>
 
 <script>
+	import star from '../star/star.vue'
+
 	export default {
 		props:{
 			seller:{
 				type: Object
 			}
 		},
+		data(){
+			return{
+				detailShow:false
+			}
+		},
+		methods:{
+			showDetail(){
+				this.detailShow = true;
+			},
+			hideDetail(){
+				this.detailShow = false;
+			}
+		},
 		created(){
 			this.classMap = ["decrease","discount","special","invoice","guarantee"]
+		},
+		components:{
+			star: star
 		}
 	};
 </script>
@@ -40,91 +100,7 @@
 <style>
 
 	@import '../../common/css/icon.css';
+	@import '../../common/css/header.css';
 
-	.header{
-		color: #fff;
-		background:#ccc;
-	}
-	.content-wrapper{
-		padding: 24px 12px 18px 24px;
-		font-size: 0;
-		position: relative;
-	}
-	.avatar{
-		display: inline-block;
-		vertical-align: top;
-	}
-	.content{
-		display: inline-block;
-		margin-left: 16px;
-	}
-	.title{
-		margin: 2px 0 8px 0;
-	}
-	.brand{
-		width: 30px;
-		height: 18px;
-		display: inline-block;
-		background-image: url(brand@2x.png);
-		background-size: 30px 18px;
-		background-repeat: no-repeat;
-		vertical-align: top;
-	}
-	.name{
-		margin-left: 6px;
-		font-size: 16px;
-		line-height: 18px;
-		font-weight: 700;
-		display: inline-block;
-	}
-	.description{
-		margin-bottom: 10px;
-		line-height: 12px;
-		font-size: 12px;
-	}
-	.icon{
-		display: inline-block;
-		width: 12px;
-		height: 12px;
-		background-size: 12px 12px;
-		background-repeat: no-repeat;
-		margin-right: 4px;
-		vertical-align: top;
-	}
-	.icon.decrease{
-		background-image: url(decrease_1@2x.png);
-	}
-	.icon.discount{
-		background-image: url(discount_1@2x.png);
-	}
-	.icon.guarantee{
-		background-image: url(guarantee_1@2x.png);
-	}
-	.icon.invoice{
-		background-image: url(invoice_1@2x.png);
-	}
-	.icon.special{
-		background-image: url(special_1@2x.png);
-	}
-	.text{
-		font-size: 10px;
-		line-height: 12px;
-	}
-	.support-count{
-		position: absolute;
-		right: 12px;
-		bottom: 18px;
-		padding: 0 8px;
-		height: 24px;
-		line-height: 24px;
-		border-radius: 14px;
-		background:rgba(0,0,0,0.2);
-		text-align: center;
-	}
-	.count{
-		font-size: 10px;
-	}
-	.icon-keyboard_arrow_right{
-		font-size: 10px;
-	}
+	
 </style>
